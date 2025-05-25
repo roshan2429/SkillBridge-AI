@@ -54,4 +54,4 @@ This project is uses a Retrieval-Augmented Generation (RAG) pipeline . The backe
 - **Frontend**: React, Vite, Tailwind CSS
 
 ## Author
-Roshan, Master’s in Computer Science (2025)
+Roshan Hyalij, MSCS Graduate (2025)
