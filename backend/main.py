@@ -10,6 +10,7 @@ from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
+from ai_agent import agentic_query_processing
 import os
 import uuid
 import logging
@@ -140,6 +141,27 @@ async def process_query(request: QueryRequest):
         )
     except Exception as e:
         logger.error(f"Query processing failed: {str(e)}")
+        return QueryResponse(
+            answer="I don’t have specific information on that, but consider exploring online courses or consulting a career coach.",
+            status="error",
+            error=str(e)
+        )
+
+@app.post("/agent-query", response_model=QueryResponse)
+async def process_agent_query(request: QueryRequest):
+    try:
+        if not request.query.strip():
+            raise HTTPException(status_code=400, detail="Query cannot be empty")
+
+        answer = agentic_query_processing(request.query, retriever, llm)
+
+        return QueryResponse(
+            answer=answer,
+            status="success",
+            error=None
+        )
+    except Exception as e:
+        logger.error(f"Agentic query failed: {str(e)}")
         return QueryResponse(
             answer="I don’t have specific information on that, but consider exploring online courses or consulting a career coach.",
             status="error",
